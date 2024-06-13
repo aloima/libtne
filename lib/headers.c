@@ -16,11 +16,11 @@ void tne_add_header(struct TNEHeaders *dest, char *name, char *value, unsigned i
 
   header->name = malloc(name_length + 1);
   header->name_length = name_length;
-  strcpy(header->name, name);
+  tne_strncpy(header->name, name, name_length);
 
   header->value = malloc(value_length + 1);
   header->value_length = value_length;
-  strcpy(header->value, value);
+  tne_strncpy(header->value, value, value_length);
 }
 
 void tne_remove_header(struct TNEHeaders *dest, char *name) {
