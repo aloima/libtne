@@ -3,7 +3,7 @@
 
 #include "../tne.h"
 
-void tne_add_header(struct TNEHeaders *dest, char *name, char *value) {
+void tne_add_header(struct TNEHeaders *dest, char *name, char *value, unsigned int name_length, unsigned int value_length) {
   ++dest->header_count;
 
   if (dest->headers == NULL) {
@@ -14,10 +14,12 @@ void tne_add_header(struct TNEHeaders *dest, char *name, char *value) {
 
   tneheader_t *header = &dest->headers[dest->header_count - 1];
 
-  header->name = malloc(strlen(name) + 1);
+  header->name = malloc(name_length + 1);
+  header->name_length = name_length;
   strcpy(header->name, name);
 
-  header->value = malloc(strlen(value) + 1);
+  header->value = malloc(value_length + 1);
+  header->value_length = value_length;
   strcpy(header->value, value);
 }
 

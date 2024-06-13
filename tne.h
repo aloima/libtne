@@ -12,7 +12,10 @@
 
   typedef struct {
     char *name;
+    unsigned int name_length;
+
     char *value;
+    unsigned int value_length;
   } tneheader_t;
 
   typedef struct {
@@ -44,7 +47,7 @@
   tneurl_t tne_parse_url(char *url);
   void tne_free_url(tneurl_t url);
 
-  void tne_add_header(struct TNEHeaders *dest, char *name, char *value);
+  void tne_add_header(struct TNEHeaders *dest, char *name, char *value, unsigned int name_length, unsigned int value_length);
   void tne_remove_header(struct TNEHeaders *dest, char *name);
   tneheader_t *tne_get_header(struct TNEHeaders dest, char *name);
   void tne_free_headers(struct TNEHeaders dest);
