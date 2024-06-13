@@ -1,0 +1,52 @@
+.TH tne_request 3 2024-06-13
+
+.SH NAME
+tne_request
+
+.SH LIBRARY
+.RI "libtne (" -ltne ")"
+
+.SH SYNOPSIS
+.B #include <tne.h>
+.P
+.BI "tneresponse_t *tne_request(tnerequest_t "request ");
+
+.SH DESCRIPTION
+Sending a HTTP 1.1 request using given request information and returns a HTTP response in
+.IR tneresponse_t .
+.P
+tneresponse_t and other specifications are defined as follows:
+.P
+.in +4n
+.EX
+typedef struct {
+    struct TNEHeaders headers;    /* response headers */
+    char *data;                   /* response data */
+    unsigned long long data_size; /* response data size */
+    tnestatus_t status;           /* response status */
+} tneresponse_t;
+
+struct TNEHeaders {
+    tneheader_t *headers;
+    unsigned int header_count;
+};
+
+typedef struct {
+    char *name;
+    unsigned int name_length;
+
+    char *value;
+    unsigned int value_length;
+} tneheader_t;
+
+typedef struct {
+    int code;                     /* HTTP status code */
+    char *message;                /* returned message of HTTP status code */
+    unsigned int message_length;
+} tnestatus_t;
+
+.SH RETURN VALUE
+On success, returns
+.I *tneresponse_t
+filled with returned HTTP response. On failure returns
+.IR "NULL" " and gives an error."
