@@ -1,4 +1,4 @@
-CC := clang
+CC := gcc
 CFLAGS := -Wall -Wextra -O2
 
 compile: $(wildcard lib/*.c)

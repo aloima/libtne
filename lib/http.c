@@ -64,13 +64,41 @@ tneresponse_t *tne_request(tnerequest_t request) {
   tne_strncpy(status_string, response_message + 9, 3);
   response->status.code = atoi(status_string);
 
-  for (unsigned int i = 13; i < response_message_size; ++i) {
-    if (response_message[i] == '\r') {
-      response->status.message_length = i - 13;
+  char *tresponse_message = response_message + 13;
+
+  while (1) {
+    if (*tresponse_message == '\r') {
+      response->status.message_length = tresponse_message - response_message - 13;
       response->status.message = malloc(response->status.message_length + 1);
       tne_strncpy(response->status.message, response_message + 13, response->status.message_length);
+      tresponse_message += 2; // pass "\r\n"
       break;
     }
+
+    ++tresponse_message;
+  }
+
+  char *presponse_message = tresponse_message;
+  char *nat = NULL;
+
+  while (1) {
+    if (*tresponse_message == ':' && nat == NULL) nat = tresponse_message;
+    if (*tresponse_message == '\r') {
+      if (nat != NULL) {
+        tne_add_header(&response->headers, presponse_message, nat + 2, nat - presponse_message, tresponse_message - nat - 2);
+        ++tresponse_message; // pass '\n'
+        presponse_message = tresponse_message + 1;
+        nat = NULL;
+      } else {
+        tresponse_message += 2;
+        response->data_size = response_message_size - (tresponse_message - response_message);
+        response->data = malloc(response->data_size);
+        memcpy(response->data, tresponse_message, response->data_size);
+        break;
+      }
+    }
+
+    ++tresponse_message;
   }
 
   free(response_message);

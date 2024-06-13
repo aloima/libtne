@@ -26,7 +26,7 @@
 
   struct TNEHeaders {
     tneheader_t *headers;
-    size_t header_count;
+    unsigned int header_count;
   };
 
   typedef struct {
