@@ -1,24 +1,24 @@
-CC := gcc
+CC := clang
 CFLAGS := -Wall -Wextra -O2
 
 compile: $(wildcard lib/*.c)
-	ar rcs libtne.a $(patsubst lib/%.c,build/%.o,$?)
+	$(CC) -shared -o libtne.so $(patsubst lib/%.c,build/%.o,$?)
 
 install: compile
-	cp libtne.a /usr/lib/libtne.a
+	cp libtne.so /usr/lib/libtne.so
 	cp tne.h /usr/include
 	make clean
 
 lib/*.c: check
-	$(CC) $(CFLAGS) -c $@ -o build/$(patsubst %.c,%.o,$(@F))
+	$(CC) $(CFLAGS) -fPIC -c $@ -o build/$(patsubst %.c,%.o,$(@F))
 
 uninstall:
-	rm /usr/lib/libtne.a
+	rm /usr/lib/libtne.so
 	rm /usr/include/tne.h
 
 clean:
 	rm -r build
-	rm libtne.a
+	rm libtne.so
 
 check:
 	mkdir -p build
