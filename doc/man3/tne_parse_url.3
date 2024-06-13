@@ -1,0 +1,36 @@
+.TH tne_parse_url 3 2024-06-13
+
+.SH NAME
+tne_parse_url
+
+.SH LIBRARY
+.RI "libtne (" -ltne ")"
+
+.SH SYNOPSIS
+.B #include <tne.h>
+.P
+.BI "tneurl_t tne_parse_url(char "*url ");
+
+.SH DESCRIPTION
+Parses given url and creates a
+.IR tneurl_t .
+.P
+tneurl_t is defined as follows:
+.P
+.in +4n
+.EX
+typedef struct {
+    char *hostname;      /* hostname of given url */
+    char *path;          /* path of given url, starts with / */
+    char *protocol;      /* protocol of given url, does not include :// */
+    unsigned short port; /* port of given url, if do not given, it is automatically set */
+} tneurl_t;
+
+.SH RETURN VALUE
+On success, returns
+.I tneurl_t
+filled with parsed url. On failure returns
+.I tneurl_t
+filled with
+.IR "zero bytes" .
+
