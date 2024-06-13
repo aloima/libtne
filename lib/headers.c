@@ -30,12 +30,17 @@ void tne_remove_header(struct TNEHeaders *dest, char *name) {
     if (strcmp(header->name, name) == 0) {
       tneheader_t last_header = dest->headers[dest->header_count - 1];
 
-      header->name = realloc(header->name, strlen(last_header.name) + 1);
-      strcpy(header->name, last_header.name);
+      header->name = realloc(header->name, last_header.name_length + 1);
+      tne_strncpy(header->name, last_header.name, last_header.name_length);
+
+      header->name_length = last_header.name_length;
       free(last_header.name);
 
-      header->value = realloc(header->value, strlen(last_header.value) + 1);
-      strcpy(header->value, last_header.value);
+
+      header->value = realloc(header->value, last_header.value_length + 1);
+      tne_strncpy(header->value, last_header.value, last_header.value_length);
+
+      header->value_length = last_header.value_length;
       free(last_header.value);
 
       --dest->header_count;
