@@ -3,6 +3,8 @@
 #ifndef TNE_H_
   #define TNE_H_
 
+  #define TNE_VERSION "1.0"
+
   typedef struct {
     char *hostname;
     char *path;
@@ -25,8 +27,8 @@
   } tnestatus_t;
 
   struct TNEHeaders {
-    tneheader_t *headers;
-    unsigned int header_count;
+    tneheader_t *data;
+    unsigned int count;
   };
 
   typedef struct {
@@ -47,10 +49,10 @@
   tneurl_t tne_parse_url(char *url);
   void tne_free_url(tneurl_t url);
 
-  void tne_add_header(struct TNEHeaders *dest, char *name, char *value, unsigned int name_length, unsigned int value_length);
-  void tne_remove_header(struct TNEHeaders *dest, char *name);
-  tneheader_t *tne_get_header(struct TNEHeaders dest, char *name);
-  void tne_free_headers(struct TNEHeaders dest);
+  void tne_add_header(struct TNEHeaders *headers, char *name, char *value, unsigned int name_length, unsigned int value_length);
+  void tne_remove_header(struct TNEHeaders *headers, char *name);
+  tneheader_t *tne_get_header(struct TNEHeaders headers, char *name);
+  void tne_free_headers(struct TNEHeaders headers);
 
   tneresponse_t *tne_request(tnerequest_t request);
   tnerequest_t tne_prepare_request(char *method, char *url);

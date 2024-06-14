@@ -34,20 +34,38 @@ tneresponse_t *tne_request(tnerequest_t request) {
     return NULL;
   }
 
-  char request_message[12288];
-  size_t request_message_length = sprintf(request_message, (
-    "%s %s HTTP/1.1\r\n"
-    "Host: %s\r\n"
-    "Connection: close\r\n\r\n"
-  ), request.method, request.url.path, request.url.hostname);
+  unsigned long long request_message_length = 0;
+  unsigned long long request_headers_length = 0;
+
+  for (unsigned int i = 0; i < request.headers.count; ++i) {
+    tneheader_t header = request.headers.data[i];
+    request_headers_length += header.name_length + header.value_length + 4;
+  }
+
+  char *request_message = malloc(request_headers_length + request.data_size + 1024);
+  request_message_length = sprintf(request_message, "%s %s HTTP/1.1\r\n", request.method, request.url.path);
+  
+  for (unsigned int i = 0; i < request.headers.count; ++i) {
+    tneheader_t header = request.headers.data[i];
+    char line[header.name_length + header.value_length + 5];
+    request_message_length += sprintf(line, "%s: %s\r\n", header.name, header.value);
+    strcat(request_message, line);
+  }
+
+  request_message_length += 21;
+  strcat(request_message, "Connection: close\r\n\r\n");
+
+  request_message = realloc(request_message, request_message_length + 1);
 
   if (send(fd, request_message, request_message_length, 0) == -1) {
     fputs("tne_request: sending error\n", stderr);
     return NULL;
   }
 
+  free(request_message);
+
   unsigned char received[2048];
-  unsigned int received_size = recv(fd, received, sizeof(received_size), 0);
+  unsigned int received_size = recv(fd, received, sizeof(received), 0);
   unsigned long long response_message_size = received_size;
   char *response_message = malloc(response_message_size);
 
@@ -115,10 +133,17 @@ tnerequest_t tne_prepare_request(char *method, char *url) {
   };
 
   memcpy(request.method, method, method_size);
+
+  struct TNEHeaders *headers = &request.headers;
+  tne_add_header(headers, "Host", request.url.hostname, 4, strlen(request.url.hostname));
+  tne_add_header(headers, "User-Agent", "libtne " TNE_VERSION, 10, 10);
+  tne_add_header(headers, "Accept", "*/*", 6, 3);
+
   return request;
 }
 
 void tne_free_request(tnerequest_t request) {
+  tne_free_headers(request.headers);
   tne_free_url(request.url);
   free(request.method);
 }
@@ -126,5 +151,6 @@ void tne_free_request(tnerequest_t request) {
 void tne_free_response(tneresponse_t *response) {
   tne_free_headers(response->headers);
   free(response->status.message);
+  free(response->data);
   free(response);
 }

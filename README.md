@@ -1,4 +1,4 @@
-# tne
+# libtne
 A tiny network library provides HTTP and WebSocket clients.
 
 ## Installing
