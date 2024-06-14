@@ -5,6 +5,10 @@
 
   #define TNE_VERSION "1.0"
 
+  enum TNEErrors {
+    TNERR_NO
+  };
+
   typedef struct {
     char *hostname;
     char *path;
@@ -58,6 +62,9 @@
   tnerequest_t tne_prepare_request(char *method, char *url);
   void tne_free_request(tnerequest_t request);
   void tne_free_response(tneresponse_t *response);
+
+  enum TNEErrors tne_get_last_error();
+  void tne_set_last_error(enum TNEErrors code);
 
   void tne_strncpy(char *dest, char *src, size_t n);
 #endif
