@@ -1,0 +1,21 @@
+.TH tne_free_response 3 2024-06-14
+
+.SH NAME
+tne_free_response
+
+.SH LIBRARY
+.RI "libtne (" -ltne ")"
+
+.SH SYNOPSIS
+.B #include <tne.h>
+.P
+.BI "void tne_free_response(tneresponse_t " "*response" ");"
+
+.SH DESCRIPTION
+.RI "Frees allocated memory blocks of " "*response" "."
+
+.SH RETURN VALUE
+On success, returns nothing. On failure, will be memory leak.
+
+.SH SEE ALSO
+.BR tne_request (3)
