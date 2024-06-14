@@ -1,0 +1,20 @@
+.TH tne_strncpy 3 2024-06-14
+
+.SH NAME
+tne_strncpy
+
+.SH LIBRARY
+.RI "libtne (" -ltne ")"
+
+.SH SYNOPSIS
+.B #include <tne.h>
+.P
+.BI "void tne_strncpy(char " "*dest" ", char " "*src" ", size_t " "n" ");"
+
+.SH DESCRIPTION
+.RI "Copies " "*src" " to " "*dest" " of " "n bytes" " using "
+.B strncpy
+.RI "method in the standard library, then change " "dest[n]" " to " "zero" ". Therefore, allocated size of " "*dest" " must be least " "n+1" "."
+
+.SH RETURN VALUE
+On success, returns nothing. On failure, may be memory leak.
