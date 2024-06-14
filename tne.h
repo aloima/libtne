@@ -11,7 +11,9 @@
     TNERR_NO,
     TNERR_CMIS,
     TNERR_IV,
-    TNERR_SSL
+    TNERR_SSL,
+    TNERR_SOCK,
+    TNERR_SOCKSSL
   };
 
   typedef struct {

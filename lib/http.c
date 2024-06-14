@@ -22,7 +22,8 @@ tneresponse_t *tne_request(tnerequest_t request) {
   int fd;
 
   if ((fd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
-    fputs("tne_request: socket opening error\n", stderr);
+    tne_set_last_err(TNERR_SOCK);
+    tne_free_response(response);
     return NULL;
   }
 
@@ -35,7 +36,9 @@ tneresponse_t *tne_request(tnerequest_t request) {
   };
 
   if (connect(fd, (struct sockaddr *) &addr, sizeof(addr)) == -1) {
-    fputs("tne_request: connecting error\n", stderr);
+    tne_set_last_err(TNERR_SOCK);
+    tne_free_response(response);
+    close(fd);
     return NULL;
   }
 
@@ -102,7 +105,10 @@ tneresponse_t *tne_request(tnerequest_t request) {
   req_msg = realloc(req_msg, req_msg_len + 1);
 
   if (tne_write(ssl, fd, req_msg, req_msg_len) == -1) {
-    fputs("tne_request: sending error\n", stderr);
+    tne_set_last_err(TNERR_SOCKSSL);
+    tne_free_response(response);
+    free(req_msg);
+    close(fd);
     return NULL;
   }
 
