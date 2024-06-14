@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #include "../tne.h"
 
@@ -54,7 +55,9 @@ void tne_remove_header(struct TNEHeaders *dest, char *name) {
 tneheader_t *tne_get_header(struct TNEHeaders dest, char *name) {
   for (unsigned int i = 0; i < dest.header_count; ++i) {
     tneheader_t *header = &dest.headers[i];
-    if (strcmp(header->name, name) == 0) return header;
+    unsigned int k = 0;
+    while (name[k] != '\0' && header->name[k] != '\0' && tolower(name[k]) == tolower(header->name[k])) ++k;
+    if (k == header->name_length) return header;
   }
 
   return NULL;
