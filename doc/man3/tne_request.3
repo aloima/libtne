@@ -45,8 +45,9 @@ typedef struct {
 } tnestatus_t;
 
 .SH RETURN VALUE
-.RI "On success, returns " "*tneresponse_t" " filled with returned HTTP response. On failure returns " "NULL" " and gives an error."
+.RI "On success, returns " "*tneresponse_t" " filled with returned HTTP response. On failure, returns " "NULL" " and sets last error code."
 
 .SH SEE ALSO
 .BR tne_free_request (3)
+.BR tne_get_last_error (3)
 .BR tne_prepare_request (3)

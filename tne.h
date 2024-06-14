@@ -6,7 +6,8 @@
   #define TNE_VERSION "1.0"
 
   enum TNEErrors {
-    TNERR_NO
+    TNERR_NO,
+    TNERR_CMIS
   };
 
   typedef struct {

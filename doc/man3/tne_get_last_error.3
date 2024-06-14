@@ -1,0 +1,28 @@
+.TH tne_get_last_error 3 2024-06-14
+
+.SH NAME
+tne_get_last_error
+
+.SH LIBRARY
+.RI "libtne (" -ltne ")"
+
+.SH SYNOPSIS
+.B #include <tne.h>
+.P
+.B enum TNEErrors tne_get_last_error();
+
+.SH DESCRIPTION
+Gives last error of tne. Errors are specified as follows:
+.P
+.in +4n
+.EX
+enum TNEErrors {
+    TNERR_NO,  /* there is no error */
+    TNERR_CMIS /* content-length header and caught data size are mismatch */
+};
+
+.SH RETURN VALUE
+Returns last error code, guarantees no failure.
+
+.SH SEE ALSO
+.BR tne_set_last_error (3)

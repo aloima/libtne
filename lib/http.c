@@ -110,6 +110,16 @@ tneresponse_t *tne_request(tnerequest_t request) {
       } else {
         tresponse_message += 2;
         response->data_size = response_message_size - (tresponse_message - response_message);
+
+        tneheader_t *content_length = tne_get_header(response->headers, "content-length");
+
+        if (content_length && (unsigned long long) atoll(content_length->value) != response->data_size) {
+          tne_set_last_error(TNERR_CMIS);
+          free(response_message);
+          close(fd);
+          return NULL;
+        }
+
         response->data = malloc(response->data_size);
         memcpy(response->data, tresponse_message, response->data_size);
         break;
