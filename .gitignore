@@ -1,2 +1,4 @@
 build/
 /libtne.so
+.cache/
+compile_commands.json
