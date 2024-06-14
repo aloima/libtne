@@ -1,7 +1,7 @@
-.TH tne_free_url 3 2024-06-13
+.TH tne_free_request 3 2024-06-14
 
 .SH NAME
-tne_free_url
+tne_free_request
 
 .SH LIBRARY
 .RI "libtne (" -ltne ")"
@@ -9,13 +9,13 @@ tne_free_url
 .SH SYNOPSIS
 .B #include <tne.h>
 .P
-.BI "void tne_free_url(tneurl_t " "url" ");"
+.BI "void tne_free_request(tnerequest_t " "request" ");"
 
 .SH DESCRIPTION
-.RI "Frees allocated memory blocks of " "url" "."
+.RI "Frees allocated memory blocks of " "request" "."
 
 .SH RETURN VALUE
 On success, returns nothing. On failure, will be memory leak.
 
 .SH SEE ALSO
-.BR tne_parse_url (3)
+.BR tne_prepare_request (3)
