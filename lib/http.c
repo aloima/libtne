@@ -48,7 +48,7 @@ tneresponse_t *tne_request(tnerequest_t request) {
     OpenSSL_add_ssl_algorithms();
 
     if ((ctx = SSL_CTX_new(TLS_method())) == NULL) {
-      tne_set_last_error(TNERR_SSL);
+      tne_set_last_err(TNERR_SSL);
       tne_cleanup_openssl(ssl, ctx);
       tne_free_response(response);
       close(fd);
@@ -56,7 +56,7 @@ tneresponse_t *tne_request(tnerequest_t request) {
     }
 
     if ((ssl = SSL_new(ctx)) == NULL) {
-      tne_set_last_error(TNERR_SSL);
+      tne_set_last_err(TNERR_SSL);
       tne_cleanup_openssl(ssl, ctx);
       tne_free_response(response);
       close(fd);
@@ -66,14 +66,14 @@ tneresponse_t *tne_request(tnerequest_t request) {
     SSL_set_fd(ssl, fd);
 
     if (SSL_connect(ssl) <= 0) {
-      tne_set_last_error(TNERR_SSL);
+      tne_set_last_err(TNERR_SSL);
       tne_cleanup_openssl(ssl, ctx);
       tne_free_response(response);
       close(fd);
       return NULL;
     }
   } else if (strcmp(request.url.protocol, "http") != 0) {
-    tne_set_last_error(TNERR_IV);
+    tne_set_last_err(TNERR_IV);
     tne_free_response(response);
     close(fd);
     return NULL;
@@ -158,7 +158,7 @@ tneresponse_t *tne_request(tnerequest_t request) {
         tneheader_t *content_length = tne_get_header(response->headers, "content-length");
 
         if (content_length && (unsigned long long) atoll(content_length->value) != response->data_size) {
-          tne_set_last_error(TNERR_CMIS);
+          tne_set_last_err(TNERR_CMIS);
           tne_free_response(response);
           free(res_msg);
           close(fd);

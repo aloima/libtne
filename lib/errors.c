@@ -1,11 +1,11 @@
 #include "../tne.h"
 
-enum TNEErrors error = TNERR_NO;
+enum TNEErrors err = TNERR_NO;
 
-enum TNEErrors tne_get_last_error() {
-  return error;
+enum TNEErrors tne_get_last_err() {
+  return err;
 }
 
-void tne_set_last_error(enum TNEErrors code) {
-  error = code;
+void tne_set_last_err(enum TNEErrors code) {
+  err = code;
 }

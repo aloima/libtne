@@ -68,8 +68,8 @@
   void tne_free_request(tnerequest_t request);
   void tne_free_response(tneresponse_t *response);
 
-  enum TNEErrors tne_get_last_error();
-  void tne_set_last_error(enum TNEErrors code);
+  enum TNEErrors tne_get_last_err();
+  void tne_set_last_err(enum TNEErrors code);
 
   void tne_strncpy(char *dest, char *src, size_t n);
   void tne_cleanup_openssl(SSL *ssl, SSL_CTX *ctx);

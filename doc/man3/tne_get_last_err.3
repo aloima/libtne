@@ -1,7 +1,7 @@
-.TH tne_get_last_error 3 2024-06-14
+.TH tne_get_last_err 3 2024-06-14
 
 .SH NAME
-tne_get_last_error
+tne_get_last_err
 
 .SH LIBRARY
 .RI "libtne (" -ltne ")"
@@ -9,7 +9,7 @@ tne_get_last_error
 .SH SYNOPSIS
 .B #include <tne.h>
 .P
-.B enum TNEErrors tne_get_last_error();
+.B enum TNEErrors tne_get_last_err();
 
 .SH DESCRIPTION
 Gives last error of tne. Errors are specified as follows:
@@ -27,4 +27,4 @@ enum TNEErrors {
 Returns last error code, guarantees no failure.
 
 .SH SEE ALSO
-.BR tne_set_last_error (3)
+.BR tne_set_last_err (3)

@@ -1,7 +1,7 @@
-.TH tne_set_last_error 3 2024-06-14
+.TH tne_set_last_err 3 2024-06-14
 
 .SH NAME
-tne_set_last_error
+tne_set_last_err
 
 .SH LIBRARY
 .RI "libtne (" -ltne ")"
@@ -9,7 +9,7 @@ tne_set_last_error
 .SH SYNOPSIS
 .B #include <tne.h>
 .P
-.BI "void tne_set_last_error(enum TNEErrors " "code" ");"
+.BI "void tne_set_last_err(enum TNEErrors " "code" ");"
 
 .SH DESCRIPTION
 Sets last error of tne. It should not be used, it is for the library.
@@ -18,4 +18,4 @@ Sets last error of tne. It should not be used, it is for the library.
 Returns nothing, guarantees no failure.
 
 .SH SEE ALSO
-.BR tne_get_last_error (3)
+.BR tne_get_last_err (3)
