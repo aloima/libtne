@@ -12,14 +12,7 @@ tne_set_last_error
 .BI "void tne_set_last_error(enum TNEErrors " "code" ");"
 
 .SH DESCRIPTION
-Sets last error of tne. Errors are specified as follows:
-.P
-.in +4n
-.EX
-enum TNEErrors {
-    TNERR_NO,  /* there is no error */
-    TNERR_CMIS /* content-length header and caught data size are mismatch */
-};
+Sets last error of tne. It should not be used, it is for the library.
 
 .SH RETURN VALUE
 Returns nothing, guarantees no failure.

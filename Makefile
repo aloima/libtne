@@ -1,5 +1,5 @@
 CC := gcc
-CFLAGS := -Wall -Wextra -O2
+CFLAGS := -Wall -Wextra -O2 $(shell pkg-config --cflags --libs openssl)
 
 compile: $(wildcard lib/*.c)
 	$(CC) -shared -o libtne.so $(patsubst lib/%.c,build/%.o,$?)

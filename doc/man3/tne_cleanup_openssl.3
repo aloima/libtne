@@ -1,0 +1,24 @@
+.TH tne_cleanup_openssl 3 2024-06-14
+
+.SH NAME
+tne_cleanup_openssl
+
+.SH LIBRARY
+.RI "libtne (" -ltne ")"
+
+.SH SYNOPSIS
+.B #include <tne.h>
+.P
+.B #include <openssl/crypto.h>
+.P
+.BI "void tne_cleanup_openssl(SSL " "*ssl" ", SSL_CTX " "*ctx" ");"
+
+.SH DESCRIPTION
+.RI "Frees " "*ssl" " and " "*ctx" ", then cleans OpenSSL. It should not be used, it is for the library."
+
+.SH RETURN VALUE
+.RI "On success, returns nothing. On failure, will be memory leak"
+
+.SH SEE ALSO
+.BR tne_read (3)
+.BR tne_write (3)

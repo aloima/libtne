@@ -1,0 +1,24 @@
+.TH tne_write 3 2024-06-14
+
+.SH NAME
+tne_write
+
+.SH LIBRARY
+.RI "libtne (" -ltne ")"
+
+.SH SYNOPSIS
+.B #include <tne.h>
+.P
+.B #include <openssl/crypto.h>
+.P
+.BI "int tne_write(SSL " "*ssl" ", int " "fd" ", char " "*message" ", unsigned long long " "size" ");"
+
+.SH DESCRIPTION
+.RI "Writes " "*message" " to socket as " "SSL_write" " from OpenSSL and " "send" " methods combination. It should not be used, it is for the library."
+
+.SH RETURN VALUE
+.RI "On success, returns written data length. On failure, return " "an integer equals to or less than 0."
+
+.SH SEE ALSO
+.BR tne_read (3)
+.BR tne_cleanup_openssl (3)

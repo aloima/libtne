@@ -17,8 +17,10 @@ Gives last error of tne. Errors are specified as follows:
 .in +4n
 .EX
 enum TNEErrors {
-    TNERR_NO,  /* there is no error */
-    TNERR_CMIS /* content-length header and caught data size are mismatch */
+    TNERR_NO,   /* there is no error */
+    TNERR_CMIS, /* content-length header and caught data size are mismatch */
+    TNERR_IV,   /* invalid url protocol for used function */
+    TNERR_SSL   /* OpenSSL error, may be anything, check OpenSSL error codes */
 };
 
 .SH RETURN VALUE

@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
+
+#include <openssl/ssl.h>
+#include <openssl/crypto.h>
+#include <openssl/evp.h>
 
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -34,6 +39,46 @@ tneresponse_t *tne_request(tnerequest_t request) {
     return NULL;
   }
 
+  SSL_CTX *ctx = NULL;
+  SSL *ssl = NULL;
+  bool is_https = strcmp(request.url.protocol, "https") == 0;
+
+  if (is_https) {
+    SSL_library_init();
+    OpenSSL_add_ssl_algorithms();
+
+    if ((ctx = SSL_CTX_new(TLS_method())) == NULL) {
+      tne_set_last_error(TNERR_SSL);
+      tne_cleanup_openssl(ssl, ctx);
+      tne_free_response(response);
+      close(fd);
+      return NULL;
+    }
+
+    if ((ssl = SSL_new(ctx)) == NULL) {
+      tne_set_last_error(TNERR_SSL);
+      tne_cleanup_openssl(ssl, ctx);
+      tne_free_response(response);
+      close(fd);
+      return NULL;
+    }
+
+    SSL_set_fd(ssl, fd);
+
+    if (SSL_connect(ssl) <= 0) {
+      tne_set_last_error(TNERR_SSL);
+      tne_cleanup_openssl(ssl, ctx);
+      tne_free_response(response);
+      close(fd);
+      return NULL;
+    }
+  } else if (strcmp(request.url.protocol, "http") != 0) {
+    tne_set_last_error(TNERR_IV);
+    tne_free_response(response);
+    close(fd);
+    return NULL;
+  }
+
   unsigned long long request_message_length = 0;
   unsigned long long request_headers_length = 0;
 
@@ -57,21 +102,21 @@ tneresponse_t *tne_request(tnerequest_t request) {
 
   request_message = realloc(request_message, request_message_length + 1);
 
-  if (send(fd, request_message, request_message_length, 0) == -1) {
+  if (tne_write(ssl, fd, request_message, request_message_length) == -1) {
     fputs("tne_request: sending error\n", stderr);
     return NULL;
   }
 
   free(request_message);
 
-  unsigned char received[2048];
-  unsigned int received_size = recv(fd, received, sizeof(received), 0);
+  char received[2048];
+  unsigned int received_size = tne_read(ssl, fd, received, sizeof(received));
   unsigned long long response_message_size = received_size;
   char *response_message = malloc(response_message_size);
 
   memcpy(response_message, received, received_size);
 
-  while ((received_size = recv(fd, received, sizeof(received), 0)) > 0) {
+  while ((received_size = tne_read(ssl, fd, received, sizeof(received))) > 0) {
     int new_size = response_message_size + received_size;
     response_message = realloc(response_message, new_size);
     memcpy(response_message + response_message_size, received, received_size);
@@ -115,6 +160,7 @@ tneresponse_t *tne_request(tnerequest_t request) {
 
         if (content_length && (unsigned long long) atoll(content_length->value) != response->data_size) {
           tne_set_last_error(TNERR_CMIS);
+          tne_free_response(response);
           free(response_message);
           close(fd);
           return NULL;
@@ -127,6 +173,11 @@ tneresponse_t *tne_request(tnerequest_t request) {
     }
 
     ++tresponse_message;
+  }
+
+  if (is_https) {
+    SSL_shutdown(ssl);
+    tne_cleanup_openssl(ssl, ctx);
   }
 
   free(response_message);
@@ -160,7 +211,7 @@ void tne_free_request(tnerequest_t request) {
 
 void tne_free_response(tneresponse_t *response) {
   tne_free_headers(response->headers);
-  free(response->status.message);
-  free(response->data);
+  if (response->status.message != NULL) free(response->status.message);
+  if (response->data != NULL) free(response->data);
   free(response);
 }

@@ -1,5 +1,7 @@
 #include <stddef.h>
 
+#include <openssl/crypto.h>
+
 #ifndef TNE_H_
   #define TNE_H_
 
@@ -7,7 +9,9 @@
 
   enum TNEErrors {
     TNERR_NO,
-    TNERR_CMIS
+    TNERR_CMIS,
+    TNERR_IV,
+    TNERR_SSL
   };
 
   typedef struct {
@@ -68,4 +72,7 @@
   void tne_set_last_error(enum TNEErrors code);
 
   void tne_strncpy(char *dest, char *src, size_t n);
+  void tne_cleanup_openssl(SSL *ssl, SSL_CTX *ctx);
+  int tne_write(SSL *ssl, int fd, char *message, unsigned long long size);
+  int tne_read(SSL *ssl, int fd, char *buffer, unsigned int size);
 #endif
