@@ -79,100 +79,99 @@ tneresponse_t *tne_request(tnerequest_t request) {
     return NULL;
   }
 
-  unsigned long long request_message_length = 0;
-  unsigned long long request_headers_length = 0;
+  unsigned long long req_headers_len = 0;
 
   for (unsigned int i = 0; i < request.headers.count; ++i) {
     tneheader_t header = request.headers.data[i];
-    request_headers_length += header.name_length + header.value_length + 4;
+    req_headers_len += header.name_len + header.value_len + 4;
   }
 
-  char *request_message = malloc(request_headers_length + request.data_size + 1024);
-  request_message_length = sprintf(request_message, "%s %s HTTP/1.1\r\n", request.method, request.url.path);
+  char *req_msg = malloc(req_headers_len + request.data_size + 1024);
+  unsigned long long req_msg_len = sprintf(req_msg, "%s %s HTTP/1.1\r\n", request.method, request.url.path);
   
   for (unsigned int i = 0; i < request.headers.count; ++i) {
     tneheader_t header = request.headers.data[i];
-    char line[header.name_length + header.value_length + 5];
-    request_message_length += sprintf(line, "%s: %s\r\n", header.name, header.value);
-    strcat(request_message, line);
+    char line[header.name_len + header.value_len + 5];
+    req_msg_len += sprintf(line, "%s: %s\r\n", header.name, header.value);
+    strcat(req_msg, line);
   }
 
-  request_message_length += 21;
-  strcat(request_message, "Connection: close\r\n\r\n");
+  req_msg_len += 21;
+  strcat(req_msg, "Connection: close\r\n\r\n");
 
-  request_message = realloc(request_message, request_message_length + 1);
+  req_msg = realloc(req_msg, req_msg_len + 1);
 
-  if (tne_write(ssl, fd, request_message, request_message_length) == -1) {
+  if (tne_write(ssl, fd, req_msg, req_msg_len) == -1) {
     fputs("tne_request: sending error\n", stderr);
     return NULL;
   }
 
-  free(request_message);
+  free(req_msg);
 
   char received[2048];
   unsigned int received_size = tne_read(ssl, fd, received, sizeof(received));
-  unsigned long long response_message_size = received_size;
-  char *response_message = malloc(response_message_size);
+  unsigned long long res_msg_size = received_size;
+  char *res_msg = malloc(res_msg_size);
 
-  memcpy(response_message, received, received_size);
+  memcpy(res_msg, received, received_size);
 
   while ((received_size = tne_read(ssl, fd, received, sizeof(received))) > 0) {
-    int new_size = response_message_size + received_size;
-    response_message = realloc(response_message, new_size);
-    memcpy(response_message + response_message_size, received, received_size);
-    response_message_size = new_size;
+    int new_size = res_msg_size + received_size;
+    res_msg = realloc(res_msg, new_size);
+    memcpy(res_msg + res_msg_size, received, received_size);
+    res_msg_size = new_size;
   }
 
-  char status_string[4];
-  tne_strncpy(status_string, response_message + 9, 3);
-  response->status.code = atoi(status_string);
+  char status_str[4];
+  tne_strncpy(status_str, res_msg + 9, 3);
+  response->status.code = atoi(status_str);
 
-  char *tresponse_message = response_message + 13;
+  char *tres_msg = res_msg + 13;
 
   while (1) {
-    if (*tresponse_message == '\r') {
-      response->status.message_length = tresponse_message - response_message - 13;
-      response->status.message = malloc(response->status.message_length + 1);
-      tne_strncpy(response->status.message, response_message + 13, response->status.message_length);
-      tresponse_message += 2; // pass "\r\n"
+    if (*tres_msg == '\r') {
+      response->status.message_len = tres_msg - res_msg - 13;
+      response->status.message = malloc(response->status.message_len + 1);
+      tne_strncpy(response->status.message, res_msg + 13, response->status.message_len);
+      tres_msg += 2; // pass "\r\n"
       break;
     }
 
-    ++tresponse_message;
+    ++tres_msg;
   }
 
-  char *presponse_message = tresponse_message;
+  char *pres_msg = tres_msg;
   char *nat = NULL;
 
   while (1) {
-    if (*tresponse_message == ':' && nat == NULL) nat = tresponse_message;
-    if (*tresponse_message == '\r') {
+    if (*tres_msg == ':' && nat == NULL) nat = tres_msg;
+    if (*tres_msg == '\r') {
       if (nat != NULL) {
-        tne_add_header(&response->headers, presponse_message, nat + 2, nat - presponse_message, tresponse_message - nat - 2);
-        ++tresponse_message; // pass '\n'
-        presponse_message = tresponse_message + 1;
+        tne_add_header(&response->headers, pres_msg, nat + 2, nat - pres_msg, tres_msg - nat - 2);
+        ++tres_msg; // pass '\n'
+        pres_msg = tres_msg + 1;
         nat = NULL;
       } else {
-        tresponse_message += 2;
-        response->data_size = response_message_size - (tresponse_message - response_message);
+        tres_msg += 2;
+        response->data_size = res_msg_size - (tres_msg - res_msg);
 
         tneheader_t *content_length = tne_get_header(response->headers, "content-length");
 
         if (content_length && (unsigned long long) atoll(content_length->value) != response->data_size) {
           tne_set_last_error(TNERR_CMIS);
           tne_free_response(response);
-          free(response_message);
+          free(res_msg);
           close(fd);
           return NULL;
         }
 
         response->data = malloc(response->data_size);
-        memcpy(response->data, tresponse_message, response->data_size);
+        memcpy(response->data, tres_msg, response->data_size);
         break;
       }
     }
 
-    ++tresponse_message;
+    ++tres_msg;
   }
 
   if (is_https) {
@@ -180,7 +179,7 @@ tneresponse_t *tne_request(tnerequest_t request) {
     tne_cleanup_openssl(ssl, ctx);
   }
 
-  free(response_message);
+  free(res_msg);
   close(fd);
 
   return response;

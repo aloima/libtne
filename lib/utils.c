@@ -19,18 +19,18 @@ void tne_cleanup_openssl(SSL *ssl, SSL_CTX *ctx) {
   EVP_cleanup();
 }
 
-int tne_write(SSL *ssl, int fd, char *message, unsigned long long size) {
+int tne_write(SSL *ssl, int fd, char *buf, unsigned long long size) {
   if (ssl == NULL) {
-    return send(fd, message, size, 0);
+    return send(fd, buf, size, 0);
   } else {
-    return SSL_write(ssl, message, size);
+    return SSL_write(ssl, buf, size);
   }
 }
 
-int tne_read(SSL *ssl, int fd, char *buffer, unsigned int size) {
+int tne_read(SSL *ssl, int fd, char *buf, unsigned int size) {
   if (ssl == NULL) {
-    return recv(fd, buffer, size, 0);
+    return recv(fd, buf, size, 0);
   } else {
-    return SSL_read(ssl, buffer, size);
+    return SSL_read(ssl, buf, size);
   }
 }

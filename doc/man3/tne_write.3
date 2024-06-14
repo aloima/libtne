@@ -11,10 +11,10 @@ tne_write
 .P
 .B #include <openssl/crypto.h>
 .P
-.BI "int tne_write(SSL " "*ssl" ", int " "fd" ", char " "*message" ", unsigned long long " "size" ");"
+.BI "int tne_write(SSL " "*ssl" ", int " "fd" ", char " "*buf" ", unsigned long long " "size" ");"
 
 .SH DESCRIPTION
-.RI "Writes " "*message" " to socket as " "SSL_write" " from OpenSSL and " "send" " methods combination. It should not be used, it is for the library."
+.RI "Writes " "*buf" " to socket as " "SSL_write" " from OpenSSL and " "send" " methods combination. It should not be used, it is for the library."
 
 .SH RETURN VALUE
 .RI "On success, returns written data length. On failure, return " "an integer equals to or less than 0."

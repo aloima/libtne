@@ -23,16 +23,16 @@
 
   typedef struct {
     char *name;
-    unsigned int name_length;
+    unsigned int name_len;
 
     char *value;
-    unsigned int value_length;
+    unsigned int value_len;
   } tneheader_t;
 
   typedef struct {
     int code;
     char *message;
-    unsigned int message_length;
+    unsigned int message_len;
   } tnestatus_t;
 
   struct TNEHeaders {
@@ -58,7 +58,7 @@
   tneurl_t tne_parse_url(char *url);
   void tne_free_url(tneurl_t url);
 
-  void tne_add_header(struct TNEHeaders *headers, char *name, char *value, unsigned int name_length, unsigned int value_length);
+  void tne_add_header(struct TNEHeaders *headers, char *name, char *value, unsigned int name_len, unsigned int value_len);
   void tne_remove_header(struct TNEHeaders *headers, char *name);
   tneheader_t *tne_get_header(struct TNEHeaders headers, char *name);
   void tne_free_headers(struct TNEHeaders headers);
@@ -73,6 +73,6 @@
 
   void tne_strncpy(char *dest, char *src, size_t n);
   void tne_cleanup_openssl(SSL *ssl, SSL_CTX *ctx);
-  int tne_write(SSL *ssl, int fd, char *message, unsigned long long size);
-  int tne_read(SSL *ssl, int fd, char *buffer, unsigned int size);
+  int tne_write(SSL *ssl, int fd, char *buf, unsigned long long size);
+  int tne_read(SSL *ssl, int fd, char *buf, unsigned int size);
 #endif

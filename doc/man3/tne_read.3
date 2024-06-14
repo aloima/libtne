@@ -11,10 +11,10 @@ tne_read
 .P
 .B #include <openssl/crypto.h>
 .P
-.BI "int tne_read(SSL " "*ssl" ", int " "fd" ", char " "*buffer" ", unsigned int " "size" ");"
+.BI "int tne_read(SSL " "*ssl" ", int " "fd" ", char " "*buf" ", unsigned int " "size" ");"
 
 .SH DESCRIPTION
-.RI "Receives data from socket and writes into " "*buffer" " as " "SSL_read" " from OpenSSL and " "recv" " methods combination. It should not be used, it is for the library."
+.RI "Receives data from socket and writes into " "*buf" " as " "SSL_read" " from OpenSSL and " "recv" " methods combination. It should not be used, it is for the library."
 
 .SH RETURN VALUE
 .RI "On success, returns received data length. On failure, return " "an integer equals to or less than 0."
