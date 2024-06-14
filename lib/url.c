@@ -9,14 +9,14 @@ tneurl_t tne_parse_url(char *url) {
   tneurl_t res = {0};
 
   unsigned int i = 0;
-  unsigned int protocol_length = 0;
+  unsigned int protocol_len = 0;
   int port_at = -1;
-  const unsigned int length = strlen(url);
+  const unsigned int len = strlen(url);
 
-  while (i < length) {
+  while (i < len) {
     if (url[i] == ':') {
       if (res.protocol == NULL && strncmp(url + i, "://", 3) == 0) {
-        protocol_length = i;
+        protocol_len = i;
         res.protocol = malloc(i + 1);
         tne_strncpy(res.protocol, url, i);
         i += 3;
@@ -24,23 +24,24 @@ tneurl_t tne_parse_url(char *url) {
         port_at = i + 1;
         char sport[6];
 
-        while (i < length) {
+        while (i < len) {
           if (url[i] == '/') {
-            const unsigned int port_length = i - port_at;
+            const unsigned int port_len = i - port_at;
 
-            if (port_length > 5 || port_length < 1) {
-              fputs("tne_parse_url: invalid url scheme, port length must be between 1 and 5\n", stderr);
+            if (port_len > 5 || port_len < 1) {
+              tne_set_last_err(TNERR_URL);
+              free(res.protocol);
               return res;
             }
 
-            tne_strncpy(sport, url + port_at, port_length);
+            tne_strncpy(sport, url + port_at, port_len);
             res.port = atoi(sport);
 
-            res.hostname = malloc(i - protocol_length - port_length - 3);
-            tne_strncpy(res.hostname, url + protocol_length + 3, i - protocol_length - port_length - 4);
+            res.hostname = malloc(i - protocol_len - port_len - 3);
+            tne_strncpy(res.hostname, url + protocol_len + 3, i - protocol_len - port_len - 4);
 
-            res.path = malloc(length - i + 1);
-            tne_strncpy(res.path, url + i, length - i);
+            res.path = malloc(len - i + 1);
+            tne_strncpy(res.path, url + i, len - i);
 
             return res;
           }
@@ -48,19 +49,20 @@ tneurl_t tne_parse_url(char *url) {
           ++i;
         }
       } else {
-        fputs("tne_parse_url: invalid url scheme\n", stderr);
+        tne_set_last_err(TNERR_URL);
+        free(res.protocol);
         return res;
       }
     }
 
     if (url[i] == '/') {
-      res.port = res.protocol[protocol_length - 1] == 's' ? 443 : 80;
+      res.port = res.protocol[protocol_len - 1] == 's' ? 443 : 80;
 
-      res.hostname = malloc(i - protocol_length - 2);
-      tne_strncpy(res.hostname, url + protocol_length + 3, i - protocol_length - 3);
+      res.hostname = malloc(i - protocol_len - 2);
+      tne_strncpy(res.hostname, url + protocol_len + 3, i - protocol_len - 3);
 
-      res.path = malloc(length - i + 1);
-      tne_strncpy(res.path, url + i, length - i);
+      res.path = malloc(len - i + 1);
+      tne_strncpy(res.path, url + i, len - i);
 
       return res;
     }

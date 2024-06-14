@@ -5,7 +5,7 @@
 #ifndef TNE_H_
   #define TNE_H_
 
-  #define TNE_VERSION "1.0"
+  #define TNE_VERSION "1.1"
 
   enum TNEErrors {
     TNERR_NO,
@@ -13,7 +13,8 @@
     TNERR_IV,
     TNERR_SSL,
     TNERR_SOCK,
-    TNERR_SOCKSSL
+    TNERR_SOCKSSL,
+    TNERR_URL
   };
 
   typedef struct {

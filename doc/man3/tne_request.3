@@ -1,4 +1,4 @@
-.TH tne_request 3 2024-06-13
+.TH tne_request 3 2024-06-15
 
 .SH NAME
 tne_request
@@ -39,8 +39,8 @@ typedef struct {
 } tneheader_t;
 
 typedef struct {
-    int code;                     /* HTTP status code */
-    char *message;                /* returned message of HTTP status code */
+    int code;                 /* HTTP status code */
+    char *message;            /* returned message of HTTP status code */
     unsigned int message_len;
 } tnestatus_t;
 

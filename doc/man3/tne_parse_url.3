@@ -1,4 +1,4 @@
-.TH tne_parse_url 3 2024-06-13
+.TH tne_parse_url 3 2024-06-15
 
 .SH NAME
 tne_parse_url
@@ -27,12 +27,8 @@ typedef struct {
 } tneurl_t;
 
 .SH RETURN VALUE
-On success, returns
-.I tneurl_t
-filled with parsed url. On failure returns
-.I tneurl_t
-filled with
-.IR "zero bytes" .
+.RI "On success, returns " "tneurl_t" " filled with parsed url. On failure returns " "tneurl_t" " filled with " "zero bytes" " and gives " "TNERR_URL" " error."
 
 .SH SEE ALSO
 .BR tne_free_url (3)
+.BR tne_get_last_err (3)

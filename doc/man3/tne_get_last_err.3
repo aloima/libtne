@@ -1,4 +1,4 @@
-.TH tne_get_last_err 3 2024-06-14
+.TH tne_get_last_err 3 2024-06-15
 
 .SH NAME
 tne_get_last_err
@@ -17,12 +17,13 @@ Gives last error of tne. Errors are specified as follows:
 .in +4n
 .EX
 enum TNEErrors {
-    TNERR_NO,     /* there is no error */
-    TNERR_CMIS,   /* content-length header and caught data size are mismatch */
-    TNERR_IV,     /* invalid url protocol for used function */
-    TNERR_SSL,    /* OpenSSL error, may be anything, check OpenSSL error codes */
-    TNERR_SOCK,   /* sockets error, related with OS. check errno from errno.h, you can use perror() method */
-    TNERR_SOCKSSL /* combination of TNERR_SSL and TNERR_SOCK, for errors of mutual methods like tne_write */
+    TNERR_NO,      /* there is no error */
+    TNERR_CMIS,    /* content-length header and caught data size are mismatch */
+    TNERR_IV,      /* invalid url protocol for used function */
+    TNERR_SSL,     /* OpenSSL error, may be anything, check OpenSSL error codes */
+    TNERR_SOCK,    /* sockets error, related with OS. check errno from errno.h, you can use perror() method */
+    TNERR_SOCKSSL, /* combination of TNERR_SSL and TNERR_SOCK, for errors of mutual methods like tne_write */
+    TNERR_URL      /* parsing url error, invalid port or invalid url scheme */
 };
 
 .SH RETURN VALUE
