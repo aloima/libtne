@@ -9,10 +9,10 @@ tne_prepare_request
 .SH SYNOPSIS
 .B #include <tne.h>
 .P
-.BI "tnerequest_t tne_prepare_request(char " "*method" ", char " "*url" ");"
+.BI "tnerequest_t *tne_prepare_request(char " "*method" ", char " "*url" ");"
 
 .SH DESCRIPTION
-.RI "Prepares a " "tnerequest_t" " will be used while sending a HTTP request."
+.RI "Prepares a " "*tnerequest_t" " will be used while sending a HTTP request."
 .P
 tnerequest_t and other specifications are defined as follows:
 .P
@@ -40,13 +40,13 @@ typedef struct {
 } tneheader_t;
 
 typedef struct {
-    int code;                     /* HTTP status code */
-    char *message;                /* returned message of HTTP status code */
+    int code;                 /* HTTP status code */
+    char *message;            /* returned message of HTTP status code */
     unsigned int message_len;
 } tnestatus_t;
 
 .SH RETURN VALUE
-.RI "On success, returns " "tnerequest_t" ". On failure, may be memory leak."
+.RI "On success, returns " "*tnerequest_t" ". On failure, returns " "NULL" " sets last error code."
 
 .SH SEE ALSO
 .BR tne_free_request (3)

@@ -9,10 +9,10 @@ tne_request
 .SH SYNOPSIS
 .B #include <tne.h>
 .P
-.BI "tneresponse_t *tne_request(tnerequest_t " "request" ");"
+.BI "tneresponse_t *tne_request(tnerequest_t " "*request" ");"
 
 .SH DESCRIPTION
-.RI "Sends a HTTP 1.1 request using given request information and returns a HTTP response in " "tneresponse_t" "."
+.RI "Sends a HTTP 1.1 request using given " "*request" " information and returns a HTTP response in " "tneresponse_t" "."
 .P
 tneresponse_t and other specifications are defined as follows:
 .P

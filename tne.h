@@ -14,7 +14,8 @@
     TNERR_SSL,
     TNERR_SOCK,
     TNERR_SOCKSSL,
-    TNERR_URL
+    TNERR_URL,
+    TNERR_HMETH
   };
 
   typedef struct {
@@ -66,9 +67,9 @@
   tneheader_t *tne_get_header(struct TNEHeaders headers, char *name);
   void tne_free_headers(struct TNEHeaders headers);
 
-  tneresponse_t *tne_request(tnerequest_t request);
-  tnerequest_t tne_prepare_request(char *method, char *url);
-  void tne_free_request(tnerequest_t request);
+  tneresponse_t *tne_request(tnerequest_t *request);
+  tnerequest_t *tne_prepare_request(char *method, char *url);
+  void tne_free_request(tnerequest_t *request);
   void tne_free_response(tneresponse_t *response);
 
   enum TNEErrors tne_get_last_err();
