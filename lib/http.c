@@ -176,6 +176,7 @@ tneresponse_t *tne_request(tnerequest_t *request) {
 
         response->data = malloc(response->data_size);
         memcpy(response->data, tres_msg, response->data_size);
+        response->data[response->data_size - 1] = '\0';
         break;
       }
     }
