@@ -1,0 +1,21 @@
+.TH tne_get_err_msg 3 2024-06-15
+
+.SH NAME
+tne_get_err_msg
+
+.SH LIBRARY
+.RI "libtne (" -ltne ")"
+
+.SH SYNOPSIS
+.B #include <tne.h>
+.P
+.BI "char *tne_get_err_msg(enum TNEErrors " "code" ");"
+
+.SH DESCRIPTION
+.RI "Gives error message of " "code" "."
+
+.SH RETURN VALUE
+.RI "Returns " "char*" ", guarantees no failure."
+
+.SH SEE ALSO
+.BR tne_get_last_err (3)
