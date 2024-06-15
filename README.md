@@ -1,9 +1,23 @@
 # libtne
 A tiny network library provides HTTP and WebSocket clients.
 
-## Installing
+## Prerequisites
++ OpenSSL library and its development headers
+
+## Building and Installing
 ```sh
 sudo make install
+```
+
+## Get/clean manuals
+To get:
+```sh
+sudo make docs
+```
+
+To clean:
+```sh
+sudo make docs-clean
 ```
 
 ## Uninstalling
