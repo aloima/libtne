@@ -9,11 +9,10 @@ tne_parse_url
 .SH SYNOPSIS
 .B #include <tne.h>
 .P
-.BI "tneurl_t tne_parse_url(char "*url ");
+.BI "tneurl_t tne_parse_url(char "*url ");"
 
 .SH DESCRIPTION
-Parses given url and creates a
-.IR tneurl_t .
+.RI "Parses given " "*url" " and creates a " "tneurl_t" "."
 .P
 tneurl_t is defined as follows:
 .P
@@ -21,9 +20,9 @@ tneurl_t is defined as follows:
 .EX
 typedef struct {
     char *hostname;      /* hostname of given url */
-    char *path;          /* path of given url, starts with / */
+    char *path;          /* path of given url, starts with /. if not given, it will be / */
     char *protocol;      /* protocol of given url, does not include :// */
-    unsigned short port; /* port of given url, if do not given, it is automatically set */
+    unsigned short port; /* port of given url, if not given, it is automatically set */
 } tneurl_t;
 
 .SH RETURN VALUE

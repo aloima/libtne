@@ -4,7 +4,6 @@
 
 #include "../tne.h"
 
-// TODO: change res.path to /, when no path
 tneurl_t tne_parse_url(char *url) {
   tneurl_t res = {0};
 
@@ -68,6 +67,16 @@ tneurl_t tne_parse_url(char *url) {
     }
 
     ++i;
+  }
+
+  if (res.path == NULL) {
+    res.port = res.protocol[protocol_len - 1] == 's' ? 443 : 80;
+
+    res.hostname = malloc(len - protocol_len - 2);
+    tne_strncpy(res.hostname, url + protocol_len + 3, len - protocol_len - 3);
+
+    res.path = malloc(2);
+    tne_strncpy(res.path, "/", 1);
   }
 
   return res;
