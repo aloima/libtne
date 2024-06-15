@@ -34,6 +34,9 @@ char *tne_get_err_msg(enum TNEErrors code) {
       return "An error occured when parsing URL. Specified URL does not match URL scheme.";
 
     case TNERR_HMETH:
-      return "Specified an invalid HTTP method, it should not include an white-space character.";
+      return "Specified an invalid HTTP method, it should not include an whitespace character.";
+
+    case TNERR_HN:
+      return "Specified an invalid HTTP header name, it should not include an whitespace character.";
   }
 }

@@ -1,4 +1,4 @@
-.TH tne_read 3 2024-06-15
+.TH tne_read 3 2024-06-16
 
 .SH NAME
 tne_read
@@ -11,7 +11,7 @@ tne_read
 .P
 .B #include <openssl/crypto.h>
 .P
-.BI "int tne_read(SSL " "*ssl" ", int " "fd" ", char " "*buf" ", unsigned int " "size" ");"
+.BI "int tne_read(SSL " "*ssl" ", int " "fd" ", char " "*buf" ", uint32_t " "size" ");"
 
 .SH DESCRIPTION
 .RI "Receives data from socket and writes into " "*buf" " as " "SSL_read" " from OpenSSL and " "recv" " methods combination. It should not be used, it is for the library."
