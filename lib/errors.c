@@ -39,4 +39,6 @@ char *tne_get_err_msg(enum TNEErrors code) {
     case TNERR_HN:
       return "Specified an invalid HTTP header name, it should not include an whitespace character.";
   }
+
+  return NULL;
 }
