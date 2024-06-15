@@ -1,0 +1,41 @@
+.TH tne_add_header 3 2024-06-16
+
+.SH NAME
+tne_add_header
+
+.SH LIBRARY
+.RI "libtne (" -ltne ")"
+
+.SH SYNOPSIS
+.B #include <stdint.h>
+.P
+.B #include <tne.h>
+.P
+.BI "tneheader_t *tne_add_header(struct TNEHeaders " "*headers" ", char " "*name" ", char " "*value" ", uint32_t " "name_len" ", uint32_t " "value_len" ");"
+
+.SH DESCRIPTION
+.RI "Adds a " "tneheader_t" " to " "*headers" " using specified values."
+.P
+tneheader_t and struct TNEHeaders are defined as follows:
+.P
+.in +4n
+.EX
+struct TNEHeaders {
+    tneheader_t *headers;
+    uint32_t header_count;
+};
+
+typedef struct {
+    char *name;
+    uint32_t name_len;
+
+    char *value;
+    uint32_t value_len;
+} tneheader_t;
+
+.SH RETURN VALUE
+.RI "On success, returns " "*tneheader_t" " which is added header. On failure, returns " "NULL" " and sets last error code."
+
+.SH SEE ALSO
+.BR tne_prepare_request (3)
+.BR tne_free_headers (3)

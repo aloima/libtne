@@ -1,0 +1,21 @@
+.TH tne_free_headers 3 2024-06-16
+
+.SH NAME
+tne_free_headers
+
+.SH LIBRARY
+.RI "libtne (" -ltne ")"
+
+.SH SYNOPSIS
+.B #include <tne.h>
+.P
+.BI "void tne_free_headers(struct TNEHeaders " "headers" ");"
+
+.SH DESCRIPTION
+.RI "Frees allocated memory blocks of " "headers" "."
+
+.SH RETURN VALUE
+On success, returns nothing. On failure, will be memory leak.
+
+.SH SEE ALSO
+.BR tne_add_header (3)
