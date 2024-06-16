@@ -48,8 +48,11 @@
 
   typedef struct {
     char *method;
+    uint8_t method_len;
+
     tneurl_t url;
     struct TNEHeaders headers;
+
     char *data;
     unsigned long long data_size;
   } tnerequest_t;

@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 #include <ctype.h>
 
 #include <openssl/ssl.h>
@@ -47,9 +46,8 @@ tneresponse_t *tne_request(tnerequest_t *request) {
 
   SSL_CTX *ctx = NULL;
   SSL *ssl = NULL;
-  bool is_https = strcmp(url.protocol, "https") == 0;
 
-  if (is_https) {
+  if (strcmp(url.protocol, "https") == 0) {
     SSL_library_init();
     OpenSSL_add_ssl_algorithms();
 
@@ -184,7 +182,7 @@ tneresponse_t *tne_request(tnerequest_t *request) {
     ++tres_msg;
   }
 
-  if (is_https) {
+  if (ssl != NULL) {
     SSL_shutdown(ssl);
     tne_cleanup_openssl(ssl, ctx);
   }
@@ -196,22 +194,21 @@ tneresponse_t *tne_request(tnerequest_t *request) {
 }
 
 tnerequest_t *tne_prepare_request(char *method, char *url) {
-  unsigned int method_size = 0;
+  unsigned int method_len = 0;
 
-  while (method[method_size] != '\0') {
-    if (isspace(method[method_size])) {
+  while (method[method_len] != '\0') {
+    if (isspace(method[method_len])) {
       tne_set_last_err(TNERR_HMETH);
       return NULL;
-    } else ++method_size;
+    } else ++method_len;
   }
-
-  method_size += 1;
 
   tnerequest_t *request = malloc(sizeof(tnerequest_t));
   memset(request, 0, sizeof(tnerequest_t));
 
-  request->method = malloc(method_size);
-  memcpy(request->method, method, method_size);
+  request->method_len = method_len;
+  request->method = malloc(method_len + 1);
+  tne_strncpy(request->method, method, method_len);
 
   request->url = tne_parse_url(url);
 

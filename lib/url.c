@@ -1,16 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 
 #include "../tne.h"
 
 tneurl_t tne_parse_url(char *url) {
   tneurl_t res = {0};
 
-  unsigned int i = 0;
-  unsigned int protocol_len = 0;
-  int port_at = -1;
-  const unsigned int len = strlen(url);
+  const uint32_t len = strlen(url);
+  uint32_t i = 0;
+  uint32_t protocol_len = 0;
+  uint32_t port_at = 0;
 
   while (i < len) {
     if (url[i] == ':') {
@@ -19,13 +20,13 @@ tneurl_t tne_parse_url(char *url) {
         res.protocol = malloc(i + 1);
         tne_strncpy(res.protocol, url, i);
         i += 3;
-      } else if (port_at == -1) {
+      } else if (port_at == 0) {
         port_at = i + 1;
         char sport[6];
 
         while (i < len) {
           if (url[i] == '/') {
-            const unsigned int port_len = i - port_at;
+            const uint32_t port_len = i - port_at;
 
             if (port_len > 5 || port_len < 1) {
               tne_set_last_err(TNERR_URL);

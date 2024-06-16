@@ -46,7 +46,6 @@ void tne_remove_header(struct TNEHeaders *headers, char *name) {
       tne_strncpy(header->name, last_header.name, last_header.name_len);
       free(last_header.name);
 
-
       header->value = realloc(header->value, last_header.value_len + 1);
       header->value_len = last_header.value_len;
       tne_strncpy(header->value, last_header.value, last_header.value_len);
@@ -63,9 +62,9 @@ void tne_remove_header(struct TNEHeaders *headers, char *name) {
 tneheader_t *tne_get_header(struct TNEHeaders headers, char *name) {
   for (uint32_t i = 0; i < headers.count; ++i) {
     tneheader_t *header = &headers.data[i];
-    uint32_t k = 0;
-    while (name[k] != '\0' && header->name[k] != '\0' && tolower(name[k]) == tolower(header->name[k])) ++k;
-    if (k == header->name_len) return header;
+    uint32_t j = 0;
+    while (name[j] != '\0' && header->name[j] != '\0' && tolower(name[j]) == tolower(header->name[j])) ++j;
+    if (j == header->name_len) return header;
   }
 
   return NULL;
