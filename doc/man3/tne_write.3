@@ -1,4 +1,4 @@
-.TH tne_write 3 2024-06-15
+.TH tne_write 3 2024-06-17
 
 .SH NAME
 tne_write
@@ -7,11 +7,13 @@ tne_write
 .RI "libtne (" -ltne ")"
 
 .SH SYNOPSIS
+.B #include <stdint.h>
+.P
 .B #include <tne.h>
 .P
 .B #include <openssl/crypto.h>
 .P
-.BI "int tne_write(SSL " "*ssl" ", int " "fd" ", char " "*buf" ", unsigned long long " "size" ");"
+.BI "int tne_write(SSL " "*ssl" ", int " "fd" ", char " "*buf" ", uint64_t " "size" ");"
 
 .SH DESCRIPTION
 .RI "Writes " "*buf" " to socket as " "SSL_write" " from OpenSSL and " "send" " methods combination. It should not be used, it is for the library."

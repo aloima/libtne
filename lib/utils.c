@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdint.h>
 
 #include <sys/socket.h>
 
@@ -19,7 +20,7 @@ void tne_cleanup_openssl(SSL *ssl, SSL_CTX *ctx) {
   EVP_cleanup();
 }
 
-int tne_write(SSL *ssl, int fd, char *buf, unsigned long long size) {
+int tne_write(SSL *ssl, int fd, char *buf, uint64_t size) {
   if (ssl == NULL) {
     return send(fd, buf, size, 0);
   } else {
@@ -27,7 +28,7 @@ int tne_write(SSL *ssl, int fd, char *buf, unsigned long long size) {
   }
 }
 
-int tne_read(SSL *ssl, int fd, char *buf, unsigned int size) {
+int tne_read(SSL *ssl, int fd, char *buf, uint32_t size) {
   if (ssl == NULL) {
     return recv(fd, buf, size, 0);
   } else {

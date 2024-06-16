@@ -1,4 +1,4 @@
-.TH tne_request 3 2024-06-16
+.TH tne_request 3 2024-06-17
 
 .SH NAME
 tne_request
@@ -19,10 +19,10 @@ tneresponse_t and other specifications are defined as follows:
 .in +4n
 .EX
 typedef struct {
-    struct TNEHeaders headers;    /* response headers */
-    char *data;                   /* response data */
-    unsigned long long data_size; /* response data size */
-    tnestatus_t status;           /* response status */
+    struct TNEHeaders headers;
+    char *data;
+    uint64_t data_size;
+    tnestatus_t status;
 } tneresponse_t;
 
 struct TNEHeaders {
@@ -39,8 +39,8 @@ typedef struct {
 } tneheader_t;
 
 typedef struct {
-    int code;             /* HTTP status code */
-    char *message;        /* returned message of HTTP status code */
+    int code;
+    char *message;
     uint32_t message_len;
 } tnestatus_t;
 

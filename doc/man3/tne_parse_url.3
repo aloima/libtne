@@ -1,4 +1,4 @@
-.TH tne_parse_url 3 2024-06-16
+.TH tne_parse_url 3 2024-06-17
 
 .SH NAME
 tne_parse_url
@@ -19,10 +19,10 @@ tneurl_t is defined as follows:
 .in +4n
 .EX
 typedef struct {
-    char *hostname;      /* hostname of given url */
-    char *path;          /* path of given url, starts with /. if not given, it will be / */
-    char *protocol;      /* protocol of given url, does not include :// */
-    uint16_t port; /* port of given url, if not given, it is automatically set */
+    char *hostname; /* hostname of given url */
+    char *path;     /* path of given url, starts with /. if not given, it will be / */
+    char *protocol; /* protocol of given url, does not include :// */
+    uint16_t port;  /* port of given url, if not given, it is automatically set */
 } tneurl_t;
 
 .SH RETURN VALUE

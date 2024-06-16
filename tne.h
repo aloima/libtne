@@ -55,13 +55,13 @@
     struct TNEHeaders headers;
 
     char *data;
-    unsigned long long data_size;
+    uint64_t data_size;
   } tnerequest_t;
 
   typedef struct {
     struct TNEHeaders headers;
     char *data;
-    unsigned long long data_size;
+    uint64_t data_size;
     tnestatus_t status;
   } tneresponse_t;
 
@@ -85,6 +85,6 @@
 
   void tne_strncpy(char *dest, char *src, size_t n);
   void tne_cleanup_openssl(SSL *ssl, SSL_CTX *ctx);
-  int tne_write(SSL *ssl, int fd, char *buf, unsigned long long size);
+  int tne_write(SSL *ssl, int fd, char *buf, uint64_t size);
   int tne_read(SSL *ssl, int fd, char *buf, uint32_t size);
 #endif

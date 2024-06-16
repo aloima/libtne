@@ -1,4 +1,4 @@
-.TH tne_prepare_request 3 2024-06-16
+.TH tne_prepare_request 3 2024-06-17
 
 .SH NAME
 tne_prepare_request
@@ -23,10 +23,10 @@ typedef struct {
     uint8_t method_len;
 
     tneurl_t url;
-    struct TNEHeaders headers;    /* headers will be used when sending request */
+    struct TNEHeaders headers; /* headers will be used when sending request */
 
-    char *data;                   /* for methods that can send data */
-    unsigned long long data_size;
+    char *data;                /* for methods that can send data */
+    uint64_t data_size;
 } tnerequest_t;
 
 struct TNEHeaders {
@@ -43,8 +43,8 @@ typedef struct {
 } tneheader_t;
 
 typedef struct {
-    int code;             /* HTTP status code */
-    char *message;        /* returned message of HTTP status code */
+    int code;
+    char *message;
     uint32_t message_len;
 } tnestatus_t;
 
