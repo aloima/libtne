@@ -38,6 +38,9 @@ char *tne_get_err_msg(enum TNEErrors code) {
 
     case TNERR_HN:
       return "Specified an invalid HTTP header name, it should not include an whitespace character.";
+
+    case TNERR_RDM:
+      return "Wrong HTTP method for adding request data. GET, CONNECT, DELETE, TRACE, OPTIONS and HEAD methods are wrong.";
   }
 
   return NULL;

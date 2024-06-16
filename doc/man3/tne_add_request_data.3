@@ -1,0 +1,24 @@
+.TH tne_add_request_data 3 2024-06-17
+
+.SH NAME
+tne_add_request_data
+
+.SH LIBRARY
+.RI "libtne (" -ltne ")"
+
+.SH SYNOPSIS
+.B #include <stdint.h>
+.P
+.B #include <tne.h>
+.P
+.BI "void tne_add_request_data(tnerequest_t " "*request" ", char " "*data" ", uint64_t " "data_size" ", char " "*type" ");"
+
+.SH DESCRIPTION
+.RI "Adds " "*data" " with " "data_size" " to " "*request" ", and adds " "Content-Length" " and " "Content-Type" " headers to headers of " "*request" ". " "type" " sets " "Content-Type" " header, " "data_size" " sets " "Content-Length" " header."
+
+.SH RETURN VALUE
+.RI "On success, returns nothing. On failure, return nothing and sets last error code to " "TNERR_RDM" "."
+
+.SH SEE ALSO
+.BR tne_prepare_request (3)
+.BR tne_request (3)

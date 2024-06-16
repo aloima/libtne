@@ -1,4 +1,4 @@
-.TH tne_get_last_err 3 2024-06-16
+.TH tne_get_last_err 3 2024-06-17
 
 .SH NAME
 tne_get_last_err
@@ -25,7 +25,8 @@ enum TNEErrors {
     TNERR_SOCKSSL, /* combination of TNERR_SSL and TNERR_SOCK, for errors of mutual methods like tne_write */
     TNERR_URL,     /* parsing url error, invalid port or invalid url scheme */
     TNERR_HMETH,   /* invalid HTTP method, it should not include any whitespace character */
-    TNERR_HN       /* invalid HTTP header name, it should not include any whitespace character */
+    TNERR_HN,      /* invalid HTTP header name, it should not include any whitespace character */
+    TNERR_RDM      /* wrong HTTP method for adding request data, GET, CONNECT, DELETE, TRACE, OPTIONS, HEAD are wrong */
 };
 
 .SH RETURN VALUE

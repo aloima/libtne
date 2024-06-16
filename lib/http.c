@@ -103,6 +103,11 @@ tneresponse_t *tne_request(tnerequest_t *request) {
   req_msg_len += 21;
   strcat(req_msg, "Connection: close\r\n\r\n");
 
+  if (request->data != NULL) {
+    memcpy(req_msg + req_msg_len, request->data, request->data_size);
+    req_msg_len += request->data_size;
+  }
+
   req_msg = realloc(req_msg, req_msg_len + 1);
 
   if (tne_write(ssl, fd, req_msg, req_msg_len) == -1) {
@@ -220,9 +225,31 @@ tnerequest_t *tne_prepare_request(char *method, char *url) {
   return request;
 }
 
+void tne_add_request_data(tnerequest_t *request, char *data, uint64_t data_size, char *type) {
+  char *method = request->method;
+
+  if (
+    strcmp(method, "GET") == 0 || strcmp(method, "CONNECT") == 0 || strcmp(method, "DELETE") == 0 ||
+    strcmp(method, "TRACE") == 0 || strcmp(method, "OPTIONS") || strcmp(method, "HEAD") == 0
+  ) {
+    tne_set_last_err(TNERR_RDM);
+    return;
+  }
+
+  request->data_size = data_size;
+  request->data = malloc(data_size);
+  memcpy(request->data, data, data_size);
+
+  char size_str[21];
+  uint8_t size_str_len = sprintf(size_str, "%ld", data_size);
+  tne_add_header(&request->headers, "Content-Length", size_str, 14, size_str_len);
+  tne_add_header(&request->headers, "Content-Type", type, 12, strlen(type));
+}
+
 void tne_free_request(tnerequest_t *request) {
   tne_free_headers(request->headers);
   tne_free_url(request->url);
+  if (request->data) free(request->data);
   free(request->method);
   free(request);
 }

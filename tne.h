@@ -17,7 +17,8 @@
     TNERR_SOCKSSL,
     TNERR_URL,
     TNERR_HMETH,
-    TNERR_HN
+    TNERR_HN,
+    TNERR_RDM
   };
 
   typedef struct {
@@ -74,6 +75,7 @@
 
   tneresponse_t *tne_request(tnerequest_t *request);
   tnerequest_t *tne_prepare_request(char *method, char *url);
+  void tne_add_request_data(tnerequest_t *request, char *data, uint64_t data_size, char *type);
   void tne_free_request(tnerequest_t *request);
   void tne_free_response(tneresponse_t *response);
 
